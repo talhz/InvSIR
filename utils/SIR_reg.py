@@ -117,3 +117,15 @@ class SlicedInverseRegression:
             plt.scatter(np.sum(self.x * self.direction[0], axis=0), np.sum(self.x * self.direction[1], axis=1))
             plt.show()
     
+    
+if __name__ == '__main__':
+    x = []
+    y = []
+    w = torch.ones(10)
+    for i in range(1000):
+        x0 = torch.randn(10)
+        x.append(x0)
+        y.append(x0[0] * (x0[0] + x0[1] + 1) + torch.randn(1)[0])
+    
+    learner = SlicedInverseRegression(x, y)
+    print(learner.direction())

@@ -79,6 +79,7 @@ class RegInvSIR:
 
         learner = SIRd(self.x, self.y, self.K, self.H)
         directions = learner.train()
+        print(directions)
         train = []
         test = []
         for env in range(len(self.x)):

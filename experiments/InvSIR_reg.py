@@ -85,7 +85,7 @@ def shift_multifeature(beta, envs, num=1000):
         X.append([])
         Y.append([])
         x = envs[i] * torch.randn((p, num))
-        y = x[0, :] * (beta @ x + 1) + torch.randn(num)
+        y = torch.sin(beta @ x) + torch.abs(beta @ x) * torch.randn(num)
         for i in range(x.shape[1]):
             X[-1].append(x[:, i])
             Y[-1].append(y[i])
@@ -172,7 +172,9 @@ def plot_example2():
     torch.manual_seed(0)
     w1 = torch.ones(10)
     envs = [np.sqrt(0.1), np.sqrt(1.5), np.sqrt(2.0)]
-    save = []
+    # envs = [np.sqrt(0.1), np.sqrt(0.3), np.sqrt(0.5), np.sqrt(1.0), np.sqrt(1.5), np.sqrt(2.0)]
+    save1 = []
+    save2 = []
     for i in range(1, 11):
         acc = []
         for restart in range(20):
@@ -187,18 +189,23 @@ def plot_example2():
             acc.append(res)
         print("Accuracy:", np.mean(acc))
         print("std:", np.std(acc))
-        save.append(np.mean(acc))
-    plt.plot(np.arange(1, 11), save, linestyle='-.', color='red')
-    plt.xlabel('Number of Features')
-    plt.ylabel('Loss')
-    plt.savefig('loss_vs_features')
+        save1.append(np.mean(acc))
+        save2.append(np.std(acc))
+    fig, ax = plt.subplots()
+    ax.plot(np.arange(1, 11), save1, marker='o')
+    ax.errorbar(np.arange(1, 11), save1, yerr=save2, fmt='none', capsize=5, elinewidth=1)
+    ax.set_xlabel('Num of features')
+    ax.set_ylabel('MSE')
+    ax.set_title('Example 2')
     plt.show()
     
 def plot_example3():
     torch.manual_seed(0)
     w1 = torch.ones(10)
     envs = [np.sqrt(0.1), np.sqrt(1.5), np.sqrt(2.0)]
-    save = []
+    # envs = [np.sqrt(0.1), np.sqrt(0.3), np.sqrt(0.5), np.sqrt(1.0), np.sqrt(1.5), np.sqrt(2.0)]
+    save1 = []
+    save2 = []
     for i in range(1, 11):
         acc = []
         for restart in range(20):
@@ -213,16 +220,19 @@ def plot_example3():
             acc.append(res)
         print("Accuracy:", np.mean(acc))
         print("std:", np.std(acc))
-        save.append(np.mean(acc))
-    plt.plot(np.arange(1, 11), save, linestyle='-.', color='red')
-    plt.xlabel('Number of Features')
-    plt.ylabel('Loss')
-    plt.savefig('loss_vs_features')
+        save1.append(np.mean(acc))
+        save2.append(np.std(acc))
+    fig, ax = plt.subplots()
+    ax.plot(np.arange(1, 11), save1, marker='o')
+    ax.errorbar(np.arange(1, 11), save1, yerr=save2, fmt='none', capsize=5, elinewidth=1)
+    ax.set_xlabel('Num of features')
+    ax.set_ylabel('MSE')
+    ax.set_title('Example 3')
     plt.show()
     
 if __name__ == "__main__":
     # example1(setting=3)
     # example2(1)
-    # example3(1)
+    # example3(2)
     # plot_example2()
     plot_example3()
